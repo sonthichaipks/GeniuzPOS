@@ -1,9 +1,11 @@
 import 'package:com_csith_geniuzpos/resources/csiconfig.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolfnc.dart';
-import 'package:com_csith_geniuzpos/screens/nav_screen.dart';
+import 'package:com_csith_geniuzpos/screens/retails/retail_salespage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
+
+import '../rest_seatzone.dart';
 
 Widget restsalesHead(BuildContext context) {
   String docno =
@@ -13,11 +15,11 @@ Widget restsalesHead(BuildContext context) {
       onPanUpdate: (details) {
         if (details.delta.dx > 0) {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 4));
+              MaterialPageRoute(builder: (value) => RetailSalesPages());
           Navigator.push(context, route);
         } else {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 3));
+              MaterialPageRoute(builder: (value) => ResturantSeatPages());
           Navigator.push(context, route);
         }
       },

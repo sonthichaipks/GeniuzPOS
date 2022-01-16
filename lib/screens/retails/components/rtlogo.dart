@@ -1,7 +1,9 @@
-import 'package:com_csith_geniuzpos/screens/nav_screen.dart';
+import 'package:com_csith_geniuzpos/screens/fullsales/full_salespage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
+
+import '../../screens.dart';
 
 Widget rtlogohead(BuildContext context) {
   return Row(children: [
@@ -9,11 +11,11 @@ Widget rtlogohead(BuildContext context) {
       onPanUpdate: (details) {
         if (details.delta.dx > 0) {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 2));
+              MaterialPageRoute(builder: (value) => FullSalesPages());
           Navigator.push(context, route);
         } else {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 1));
+              MaterialPageRoute(builder: (value) => ResturantSalesPages());
           Navigator.push(context, route);
         }
       },

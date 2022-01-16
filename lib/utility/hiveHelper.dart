@@ -14,6 +14,7 @@ import 'package:com_csith_geniuzpos/models/possales/salesitem.dart';
 import 'package:com_csith_geniuzpos/resources/csiconfig.dart';
 import 'package:com_csith_geniuzpos/utility/os.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -26,6 +27,7 @@ class HiveCtrl {
       _path = MyConfig().winData;
       Hive.init(_path);
     } else if (OS.deviceinfo() == 'Web') {
+    } else if (OS.deviceinfo() == 'Android') {
       Directory directory = await getApplicationDocumentsDirectory();
       _path = directory.path;
       Hive.init(_path);
@@ -34,7 +36,7 @@ class HiveCtrl {
       _path = directory.path;
       Hive.init(_path);
     }
-    debugPrint(OS.deviceinfo() + ':' + _path);
+
     Hive.registerAdapter(PosControlAdapter());
     Hive.registerAdapter(TableUsageAdapter());
     Hive.registerAdapter(SalesItemAdapter()); //use for [sales, bill , receipt]

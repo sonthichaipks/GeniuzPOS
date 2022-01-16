@@ -7,25 +7,53 @@ import 'package:hive/hive.dart';
 
 class PosControlModel with ChangeNotifier {
   HiveCtrl con = new HiveCtrl();
-
-  List<Box> boxes;
-
   List _poscontrolList = <PosControl>[];
-
   PosControl _poscontrolByID;
-
   List get poscontrolList => _poscontrolList;
   get poscontrol => _poscontrolByID;
+  List<Box> boxes;
 
-  getItem() async {
-    boxes = await con.openBox();
-    _poscontrolList = boxes[2].values.toList();
+  addItem(PosControl posctrl) async {
+    // boxes = await con.openBox();
+    if (boxes[2] != null) {
+      boxes[2].add(posctrl);
+    }
+
     notifyListeners();
   }
 
+  getItem() async {
+    boxes = await con.openBox();
+    if (boxes[2] != null) {
+      _poscontrolList = boxes[2].values.toList();
+    }
+
+    notifyListeners();
+  }
+
+  // HiveCtrl con = new HiveCtrl();
+
+  // List<Box> boxes;
+
+  // List _poscontrolList = <PosControl>[];
+
+  // PosControl _poscontrolByID;
+
+  // List get poscontrolList => _poscontrolList;
+  // get poscontrol => _poscontrolByID;
+
+  // getItem() async {
+  //   boxes = await con.openBox();
+  //   _poscontrolList = boxes[2].values.toList();
+  //   notifyListeners();
+  // }
+
   getAItem(int key) async {
     boxes = await con.openBox();
-    _poscontrolByID = boxes[2].getAt(key);
+    if (boxes[2] != null) {
+      _poscontrolByID = boxes[2].getAt(key);
+    }
+
     notifyListeners();
   }
 
@@ -33,11 +61,11 @@ class PosControlModel with ChangeNotifier {
     boxes = await con.openBox();
   }
 
-  addItem(PosControl inventory) async {
-    boxes[2].add(inventory);
+  // addItem(PosControl inventory) async {
+  //   boxes[2].add(inventory);
 
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
   updateItem(int index, PosControl inventory) {
     boxes[2].putAt(index, inventory);

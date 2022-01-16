@@ -9,11 +9,11 @@ Widget restseathead(BuildContext context) {
       onPanUpdate: (details) {
         if (details.delta.dx > 0) {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 2));
+              MaterialPageRoute(builder: (value) => RetailSalesPages());
           Navigator.push(context, route);
         } else {
           MaterialPageRoute route =
-              MaterialPageRoute(builder: (value) => NavScreen(screenmenu: 3));
+              MaterialPageRoute(builder: (value) => ResturantSeatPages());
           Navigator.push(context, route);
         }
       },

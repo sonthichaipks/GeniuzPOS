@@ -14,12 +14,14 @@ import 'package:com_csith_geniuzpos/services/response/escpos_response.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 import 'package:com_csith_geniuzpos/services/response/posfnc_response.dart';
 import 'package:com_csith_geniuzpos/utility/normal_dialog.dart';
+import 'package:com_csith_geniuzpos/utility/os.dart';
 import 'package:com_csith_geniuzpos/widgets/buttons/curve_button.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posinput.dart';
 
 import 'package:com_csith_geniuzpos/resources/styles.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:provider/src/provider.dart';
@@ -55,6 +57,7 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
   ExActivePIPResponse _responseActivePip;
   POSprintResponse _responseEscPos;
   TextEditingController activeTxt;
+
   List<CsPlu> getPluList;
   static final GlobalKey<FormFieldState<String>> _searchFormKey =
       GlobalKey<FormFieldState<String>>();
@@ -76,11 +79,15 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
   String thistitle;
   @override
   void initState() {
+    if (OS.deviceinfo() != 'Windows') {
+      // SystemChannels.textInput.invokeMethod('TextInput.hide');
+      //FocusScope.of(context).unfocus();
+    }
     fcn1 = FocusNode();
     fcn2 = FocusNode();
-
     memberImgUrl = "http://localhost:8080/icon-png/member.png";
     _posinput.txt1.text = widget.txtSearch;
+
     getCurPluUrl();
     //----auto serach get list when come from sales page,
     //----if more than one this will show selection list,
@@ -96,10 +103,15 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
   }
 
   void getCurPluUrl() async {
-    String url = PosControlFnc().getPLUurl(context);
-    pluUrl = await PosControlFnc().getCurrentIP(url);
-    PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
-    PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
+    if (OS.deviceinfo() == 'Windows') {
+      String url = PosControlFnc().getPLUurl(context);
+      pluUrl = await PosControlFnc().getCurrentIP(url);
+      PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+      PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
+    } else {
+      pluUrl = PosControlFnc().getPLUurl(context);
+      // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+    }
   }
 
   //----test values for printing

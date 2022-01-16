@@ -47,7 +47,7 @@ Widget posDateTime(BuildContext context, DateTime today) {
 
 Widget posDateTimeLabel() {
   DateFormat dateFormat = DateFormat("dd/MM/yyyy HH:mm:ss");
-  var now = DateTime.now();
+  final now = DateTime.now();
   return Container(
     height: Palette.fullsalesheadcheight() * 0.5,
     width: Palette.stdbutton_width * 12,

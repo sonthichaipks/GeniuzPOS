@@ -135,6 +135,21 @@ class _ReceiptsPages extends State<ReceiptsPages>
   }
 
   @override
+  void dispose() {
+    PosInput().focusnode.dispose();
+    fcn1.dispose();
+    fcn2.dispose();
+    fcn3.dispose();
+    fcn4.dispose();
+    fcn5.dispose();
+    fcn6.dispose();
+    fcn7.dispose();
+    fcn8.dispose();
+    fcn9.dispose();
+    super.dispose();
+  }
+
+  @override
   void onSearchCCPError(String error) {}
 
   @override
@@ -2492,7 +2507,8 @@ class _ReceiptsPages extends State<ReceiptsPages>
           _responseVoidAitem,
           _lastsalesitemid,
           currentitem,
-          checkSum)) {
+          checkSum,
+          dispose)) {
       } else if (result == "50") {
         setBath(result);
       } else if (result == "100") {

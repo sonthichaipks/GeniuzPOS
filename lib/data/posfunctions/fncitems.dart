@@ -13,6 +13,7 @@ import 'package:com_csith_geniuzpos/screens/searchsalman/salman_info_ok.dart';
 import 'package:com_csith_geniuzpos/services/response/person_reponse.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 import 'package:com_csith_geniuzpos/utility/normal_dialog.dart';
+import 'package:com_csith_geniuzpos/utility/os.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
@@ -22,12 +23,12 @@ import 'package:com_csith_geniuzpos/models/buttons/padbuttons.dart';
 import 'package:com_csith_geniuzpos/models/buttons/tablemaster.dart';
 import 'package:com_csith_geniuzpos/screens/fullsales/full_salespage.dart';
 import 'package:com_csith_geniuzpos/screens/home_screen.dart';
-import 'package:com_csith_geniuzpos/screens/nav_screen.dart';
 import 'package:com_csith_geniuzpos/screens/resturants/rest_salespage.dart';
 import 'package:com_csith_geniuzpos/screens/resturants/rest_seatzone.dart';
 import 'package:com_csith_geniuzpos/screens/retails/retail_salespage.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posinput.dart';
 import 'package:com_csith_geniuzpos/services/response/posfnc_response.dart';
+import 'package:flutter/services.dart';
 
 class FncItems {
   FncItems();
@@ -241,7 +242,9 @@ class FncItems {
         break;
       case "mnuExit":
         {
-          appWindow.close();
+          (OS.deviceinfo() == 'Windows')
+              ? appWindow.close()
+              : SystemNavigator.pop();
         }
         break;
       case "mnuAction":

@@ -3,6 +3,7 @@ import 'package:com_csith_geniuzpos/data/constdata.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/fncitems.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posAcmModel.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolfnc.dart';
+import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolmodel.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/pospanelctrl.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posparamctrl.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/possalesfnc.dart';
@@ -31,11 +32,13 @@ import 'package:com_csith_geniuzpos/services/response/person_reponse.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 import 'package:com_csith_geniuzpos/services/response/psparam_response.dart';
 import 'package:com_csith_geniuzpos/utility/normal_dialog.dart';
+import 'package:com_csith_geniuzpos/utility/os.dart';
 
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/models/buttons/buttuns.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posinput.dart';
 import 'package:com_csith_geniuzpos/services/response/posfnc_response.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/src/provider.dart';
 import 'package:show_network_interface_info/model/NetworkDevice.dart';
@@ -49,11 +52,6 @@ class HomeScreen extends StatefulWidget {
   HomeScreen(this.mainmenu);
   @override
   _HomeScreenState createState() => _HomeScreenState(mainmenu);
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return _HomeScreenState(mainmenu);
-  // }
 }
 
 class _HomeScreenState extends State<HomeScreen>
@@ -90,6 +88,9 @@ class _HomeScreenState extends State<HomeScreen>
   }
   @override
   void initState() {
+    if (OS.deviceinfo() != 'Windows') {
+      // SystemChannels.textInput.invokeMethod('TextInput.hide');
+    }
     super.initState();
   }
 
@@ -104,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
     context.watch<SalesItemHiveModel>().getItem();
     context.watch<BillDCItemHiveModel>().getItem();
     context.watch<ReceiptItemHiveModel>().getItem();
+    context.watch<PosControlModel>().getItem();
 
     return Scaffold(body: homeScreenDesktop(context));
   }
@@ -180,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen>
 
   Widget homeScreenDesktop(BuildContext context) {
     _context = context;
-    context.watch<PosAcmModel>().getItem();
+    // context.watch<PosAcmModel>().getItem();
     if (firstOpen == 0) {
       getCurPluUrl();
       setToSalesMode();
@@ -211,6 +213,12 @@ class _HomeScreenState extends State<HomeScreen>
               child: config(),
             ),
             poslabel(context, mainmenu),
+            //(OS.deviceinfo() != 'Windows')
+            // ? Container()
+            // :
+            // // (firstOpen == 0)
+            // //     ? Container()
+            // //     :
             Padding(
               padding: const EdgeInsets.fromLTRB(416, 150, 0, 0),
               child: GestureDetector(
@@ -317,20 +325,6 @@ class _HomeScreenState extends State<HomeScreen>
       } else if (result == "Initial") {
       } else if (result == "TaxInvoice") {
       } else if (result == "PriceCheck") {
-        //---test
-        // try {
-        // String url = PosControlFnc()
-        //     .getRefundUrl(context, '1GS00200122000002', ''); //--HD
-        // //when end refund will back to SALES by : setBIllMode(context, 1) ;
-        // _responseRefundDt.getRefundBillDT(url + '2/3');
-
-        //   _responsePosSave.SavePosTrans(context, 42);
-        // } catch (e) {
-        //   showToast(context, e.toString());
-        // }
-        //  showToast(context, url);
-        //--end test
-
         _posinput.salesPriceNo = _posinput.getPriceNo(_context);
         FncItems().searchPLU(
             _context, '', null, null, null, null, _posinput.salesPriceNo);
@@ -374,12 +368,17 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void getCurPluUrl() async {
-    String url = PosControlFnc().getPLUurl(context);
-    String baseUrl = await PosControlFnc().getCurrentIP(url);
+    if (OS.deviceinfo() == 'Windows') {
+      String url = PosControlFnc().getPLUurl(context);
+      String baseUrl = await PosControlFnc().getCurrentIP(url);
 
-    PosControlFnc().checkCurIP_pluWSurl(context, baseUrl);
+      PosControlFnc().checkCurIP_pluWSurl(context, baseUrl);
 
-    firstOpen += 1;
+      // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+      //   PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
+    }
+
+    firstOpen += 5;
   }
 
   String checkLoginMode() {

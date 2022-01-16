@@ -105,6 +105,21 @@ class _BilldischgPages extends State<BilldischgPages>
     super.initState();
   }
 
+  @override
+  void dispose() {
+    PosInput().focusnode.dispose();
+    fcn1.dispose();
+    fcn2.dispose();
+    fcn3.dispose();
+    fcn4.dispose();
+    fcn5.dispose();
+    fcn6.dispose();
+    fcn7.dispose();
+    fcn8.dispose();
+    fcn9.dispose();
+    super.dispose();
+  }
+
   void recalsum() {
     _responseSumBdcItem.doCalBDCItemSum(context);
   }
@@ -136,16 +151,10 @@ class _BilldischgPages extends State<BilldischgPages>
         String disccamt = _posinput.txt5.text.replaceAll(',', '');
         SalesItems _result = SalesItems(diccoupName, '', 0, 0, diccoupName, 0,
             (-1) * double.parse(disccamt), 'BDC', 'Pcs', 0);
-        //setState(() {
+
         PosSalesFnc().addDiscChrgFromBDCItem(context, _responseAddNew, _result);
 
         _posinput.txt8.text = '';
-        // });
-
-        // setState(() {
-        //   addDiscChrgItem(double.parse(_posinput.txt3.text.replaceAll(',', '')),
-        //       _posinput.txt4.text);
-        // });
       } else if (result == Palette.btncmd_DISCCP) {
         modeInputByType = 1;
         showPopupTask(context, "DISCCOUP");
@@ -164,7 +173,8 @@ class _BilldischgPages extends State<BilldischgPages>
           _responseVoidAitem,
           _lastsalesitemid,
           currentitem,
-          checkSum)) {
+          checkSum,
+          dispose)) {
         modeInputByType = 0;
       } else if ((result.indexOf(":") > 0)) {
       } else {
@@ -192,12 +202,6 @@ class _BilldischgPages extends State<BilldischgPages>
     } catch (e) {
       normalDialog(context, e.toString() + ' @addDiscChrgItem');
     }
-  }
-
-  @override
-  void dispose() {
-    PosInput().focusnode.dispose();
-    super.dispose();
   }
 
   @override
@@ -1370,7 +1374,8 @@ class _BilldischgPages extends State<BilldischgPages>
         _responseVoidAitem,
         _lastsalesitemid,
         currentitem,
-        checkSum);
+        checkSum,
+        dispose);
     txtinputEntry("ENTER");
   }
 

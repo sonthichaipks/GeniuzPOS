@@ -1,3 +1,5 @@
+import 'package:com_csith_geniuzpos/data/constdata.dart';
+import 'package:com_csith_geniuzpos/models/posctrls/poscontrol.dart';
 import 'package:com_csith_geniuzpos/resources/fnccal.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolfnc.dart';
@@ -7,6 +9,9 @@ import 'package:com_csith_geniuzpos/models/posmodels/getPosTranDt.dart';
 import 'package:com_csith_geniuzpos/models/posmodels/pluPrice.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesitem.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesitems.dart';
+import 'package:com_csith_geniuzpos/screens/billdischgs/billdischg_pages.dart';
+import 'package:com_csith_geniuzpos/screens/home_screen.dart';
+import 'package:com_csith_geniuzpos/screens/retails/retail_salespage.dart';
 import 'package:com_csith_geniuzpos/services/response/person_reponse.dart';
 import 'package:com_csith_geniuzpos/services/response/posbdc_response.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
@@ -14,6 +19,8 @@ import 'package:com_csith_geniuzpos/services/response/posfnc_response.dart';
 import 'package:com_csith_geniuzpos/services/response/posrcp_response.dart';
 import 'package:com_csith_geniuzpos/utility/normal_dialog.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'fncitems.dart';
 
@@ -183,7 +190,8 @@ class PosSalesFnc {
       PosBDCVoidBDCBResponse _responseVoidAitem,
       int salitmax,
       int curitindex,
-      Function doact) {
+      Function doact,
+      Function dispose) {
     int mode = PosControlFnc().getBillmode(context);
     if (result != "") {
       var tl = activeTxt.text.length;
@@ -303,24 +311,32 @@ class PosSalesFnc {
         } else if (result == "VOIDBCK") {
           //--check Line Index > lastsalesitem
           if (mode == 2) {
-            Navigator.of(context).pop(true);
+            dispose();
+            goBack(context);
+            //  Navigator.of(context).pop(true);
           } else {
             if (_posinput.bdcitemCount(context) > 0) {
               _responseVoidAitem.doVoidBDCBAitem(context, 1);
             } else {
-              Navigator.of(context).pop(true);
+              dispose();
+              goBack(context);
+              //Navigator.of(context).pop(true);
             }
           }
 
           activeTxt.text = "";
         } else if (result == "VOIDALL") {
           if (mode == 2) {
-            Navigator.of(context).pop(true);
+            dispose();
+            goBack(context);
+            //Navigator.of(context).pop(true);
           } else {
             if (_posinput.bdcitemCount(context) > 0) {
               _responseVoidAitem.doVoidBDCBAitem(context, -1);
             } else {
-              Navigator.of(context).pop(true);
+              dispose();
+              goBack(context);
+              //Navigator.of(context).pop(true);
             }
           }
         } else if (result == "CLS") {
@@ -336,6 +352,10 @@ class PosSalesFnc {
     return true;
   }
 
+  void goBack(BuildContext context) {
+    PosControlFnc().getBackScreenType(context);
+  }
+
   bool funcBillRCPCall(
       BuildContext context,
       String result,
@@ -346,7 +366,8 @@ class PosSalesFnc {
       PosFncVoidRCPResponse _responseVoidAitem,
       int salitmax,
       int curitindex,
-      Function doact) {
+      Function doact,
+      Function dispose) {
     if (result != "") {
       _posinput.savePOSTrans(context, 20);
       var tl = activeTxt.text.length;
@@ -361,14 +382,18 @@ class PosSalesFnc {
             //void a last line
             _responseVoidAitem.doVoidRCPAitem(context, 1);
           } else {
-            Navigator.of(context).pop(true);
+            dispose();
+            goBillDisc(context);
+            //Navigator.of(context).pop(true);
           }
           activeTxt.text = "";
         } else if (result == "VOIDALL") {
           if (_posinput.rcpitemCount(context) > 0) {
             _responseVoidAitem.doVoidRCPAitem(context, -1);
           } else {
-            Navigator.of(context).pop(true);
+            dispose();
+            goBillDisc(context);
+            //Navigator.of(context).pop(true);
           }
         } else if (result == "CLS") {
           activeTxt.text = "";
@@ -380,6 +405,10 @@ class PosSalesFnc {
       }
     }
     return true;
+  }
+
+  void goBillDisc(BuildContext context) {
+    Navigator.of(context).pop(1);
   }
 
   void loadSalesItemFromBill(
@@ -683,4 +712,6 @@ class PosSalesFnc {
     }
     return result;
   }
+
+  Home(int i) {}
 }

@@ -14,6 +14,9 @@ import 'package:com_csith_geniuzpos/models/posctrls/poscontrol.dart';
 import 'package:com_csith_geniuzpos/models/posmodels/posshiftlogin.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesItemSummary.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesitem.dart';
+import 'package:com_csith_geniuzpos/screens/fullsales/full_salespage.dart';
+import 'package:com_csith_geniuzpos/screens/resturants/rest_salespage.dart';
+import 'package:com_csith_geniuzpos/screens/retails/retail_salespage.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 
 import 'package:com_csith_geniuzpos/services/response/posresponse.dart';
@@ -22,6 +25,7 @@ import 'package:com_csith_geniuzpos/utility/normal_dialog.dart';
 import 'package:crclib/crclib.dart';
 import 'package:crclib/reveng.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:show_network_interface_info/model/NetworkDevice.dart';
 import 'package:show_network_interface_info/show_network_interface_info.dart';
@@ -371,6 +375,31 @@ class PosControlFnc {
     // http://192.168.1.34:9393/getsaleitem/999
     //--this is funtion get only posid/member plulist !
     return result + '/getsaleitem';
+  }
+
+  void getBackScreenType(BuildContext context) {
+    PosControlModel model =
+        Provider.of<PosControlModel>(context, listen: false);
+    PosCtrl _searchpslist = posCtrlList[MyConfig().i_configPanel];
+    String result =
+        PosControlFnc().getCurrentSettingValues(context, _searchpslist);
+    if (result.split('-').length > 0) {
+      result = result.split('-')[0].trim();
+    }
+    List<PosCtrl> screentypes = posCtrlListOpt
+        .where((e) => (e.itemcode == model.poscontrolList[1].posctrlkey))
+        .toList();
+    MaterialPageRoute route;
+    if (result == screentypes[0].valuetext.split('-')[0].trim()) {
+      route = MaterialPageRoute(builder: (value) => RetailSalesPages());
+    } else if (result == screentypes[1].valuetext.split('-')[0].trim()) {
+      route = MaterialPageRoute(builder: (value) => FullSalesPages());
+    } else if (result == screentypes[2].valuetext.split('-')[0].trim()) {
+      route = MaterialPageRoute(builder: (value) => ResturantSalesPages());
+    } else {
+      route = MaterialPageRoute(builder: (value) => RetailSalesPages());
+    }
+    Navigator.push(context, route);
   }
 
   String getRefundUrl(BuildContext context, String docno, String params) {
