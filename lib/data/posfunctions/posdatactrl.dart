@@ -42,6 +42,10 @@ class PosDataCtrl {
     return list;
   }
 
+  Future<void> exSaveActivePIP(String posip) async {
+    return await wsExec(posip); // url + /a/ posid / casierid / begcash
+  }
+
   Future<String> execShiftWS(String posexec) async {
     var data = await wsExec(posexec); // url + /a/ posid / casierid / begcash
     if (data != null) {

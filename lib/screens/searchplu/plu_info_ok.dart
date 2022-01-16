@@ -46,11 +46,13 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
         GetPluCallBack,
         GetPluListCallBack,
         GetPromoListCallBack,
-        POSprintCallBack {
+        POSprintCallBack,
+        exActivePIPCallBack {
   PosFncCallResponse _responseInput;
   GetPluListResponse _reponsePluList;
   GetPromoListResponse _reponsePromoList;
   GetPluResponse _responsePlu;
+  ExActivePIPResponse _responseActivePip;
   POSprintResponse _responseEscPos;
   TextEditingController activeTxt;
   List<CsPlu> getPluList;
@@ -64,6 +66,7 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
     _reponsePluList = new GetPluListResponse(this);
     _reponsePromoList = new GetPromoListResponse(this);
     _responseEscPos = new POSprintResponse(this);
+    _responseActivePip = new ExActivePIPResponse(this);
     csPlus = new CsPlu();
   }
 
@@ -95,7 +98,7 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
   void getCurPluUrl() async {
     String url = PosControlFnc().getPLUurl(context);
     pluUrl = await PosControlFnc().getCurrentIP(url);
-
+    PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
     PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
   }
 
@@ -1320,4 +1323,10 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
       putPromoValues(promoList[0]);
     });
   }
+
+  @override
+  void onActivePipError(String error) {}
+
+  @override
+  void onActivePipSuccess() {}
 }

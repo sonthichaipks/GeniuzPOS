@@ -32,6 +32,10 @@ class PosDataRequest {
     return con.getSignInWS(possignin);
   }
 
+  Future<void> exSaveActivePIP(String posip) {
+    return con.exSaveActivePIP(posip);
+  }
+
   Future<String> execPosShift(String posexec) {
     return con.execShiftWS(posexec);
   }

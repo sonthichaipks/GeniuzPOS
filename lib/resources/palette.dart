@@ -34,6 +34,11 @@ class Palette {
   static const String searchCREDITCARD_title = "เลือกประเภทบัตรเครดิต";
   static const String searchDEBITCARD_title = "เลือกประเภทบัตรเดบิต";
   //------POS PARAMS--ok----
+  static const String posctrl_posid_lbl = "POS ID.";
+  static const String posctrl_shopid_lbl = "SHOP ID - NAME";
+  static const String posctrl_dataurl_lbl = "DATA SERVER IP.";
+  static const String possmt_title = "POS STATION ENTRY";
+  //-----
   static const String posparam_title = "POS PARAMS LOAD - TO UPDATE";
   static const String posparam_f1 = "CONFIG.ID";
   static const String posparamf11 = "ITEM.NAME";

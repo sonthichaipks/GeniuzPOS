@@ -26,6 +26,7 @@ import 'package:com_csith_geniuzpos/screens/retails/components/rt_components.dar
 import 'package:com_csith_geniuzpos/screens/salesregister/components/register_menu.dart';
 import 'package:com_csith_geniuzpos/screens/salesregister/sales_register.dart';
 import 'package:com_csith_geniuzpos/screens/searchsalman/salman_info_ok.dart';
+import 'package:com_csith_geniuzpos/screens/setactivepos/set_activepip.dart';
 import 'package:com_csith_geniuzpos/services/response/person_reponse.dart';
 import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 import 'package:com_csith_geniuzpos/services/response/psparam_response.dart';
@@ -266,6 +267,7 @@ class _HomeScreenState extends State<HomeScreen>
               FncItems()
                   .menucenter(context, _responseInput, stdButtuonMenu[21]);
             },
+            onDoubleTap: () => _showActivePIPDialog(context),
             child: Image.asset(
               'assets/main_config.png',
               height: 130,
@@ -275,6 +277,28 @@ class _HomeScreenState extends State<HomeScreen>
         )
       ]);
     });
+  }
+
+  Future<void> _showActivePIPDialog(BuildContext context) async {
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          insetAnimationDuration: const Duration(milliseconds: 100),
+          child: Stack(
+            children: [
+              Container(
+                height: Palette.stdbutton_height * 4.8,
+                width: Palette.stdbutton_width * 9.2,
+                child: ActivePipPages(),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override

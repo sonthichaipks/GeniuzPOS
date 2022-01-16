@@ -14,6 +14,7 @@ import 'package:com_csith_geniuzpos/models/posctrls/poscontrol.dart';
 import 'package:com_csith_geniuzpos/models/posmodels/posshiftlogin.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesItemSummary.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesitem.dart';
+import 'package:com_csith_geniuzpos/services/response/posdata_response.dart';
 
 import 'package:com_csith_geniuzpos/services/response/posresponse.dart';
 import 'package:com_csith_geniuzpos/utility/crc.dart';
@@ -727,9 +728,40 @@ class PosControlFnc {
     }
   }
 
+  void saveActivePIP(BuildContext context, String curIP,
+      ExActivePIPResponse responseActivePip) {
+    PosControlModel model =
+        Provider.of<PosControlModel>(context, listen: false);
+    //--save to Server.
+    //http://127.0.0.1:9393/getActivePosStation/00122/001/[192.168.1.39:9393
+    //_responseActivePip.exActivePip(pluUrl);
+    PosCtrl _searchposid = posCtrlList[MyConfig().i_posId];
+    String posid =
+        PosControlFnc().getCurrentSettingValues(context, _searchposid);
+    if (posid.split('-').length > 0) {
+      posid = posid.split('-')[0].trim();
+    }
+    PosCtrl _searchcashier = posCtrlList[MyConfig().i_configCashier];
+    String cashier =
+        PosControlFnc().getCurrentSettingValues(context, _searchcashier);
+    if (cashier.split('-').length > 0) {
+      cashier = cashier.split('-')[0].trim();
+    }
+    String url = curIP +
+        '/getActivePosStation/' +
+        posid +
+        '/' +
+        cashier +
+        '/' +
+        curIP.replaceAll('http://', '[').replaceAll('https://', '[[');
+    responseActivePip.exActivePip(url);
+  }
+
   void checkCurIP_pluWSurl(BuildContext context, String curIP) {
     PosControlModel model =
         Provider.of<PosControlModel>(context, listen: false);
+    //----
+    //--save to config.
     PosCtrl _searchpslist = posCtrlList[MyConfig().i_pluWSurl];
 
     updatePosControl(

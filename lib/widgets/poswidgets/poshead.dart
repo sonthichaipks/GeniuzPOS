@@ -61,6 +61,34 @@ Future<void> _showMyDialog(
   );
 }
 
+Future<void> _showActivePIPDialog(
+    BuildContext context, PosHeadItem posheaditem) async {
+  return showDialog(
+    barrierDismissible: false,
+    context: context,
+    builder: (context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        insetAnimationDuration: const Duration(milliseconds: 100),
+        child: Stack(
+          children: [
+            Container(
+              height: Palette.stdbutton_height * 9.8,
+              width: Palette.stdbutton_width * 7.3,
+              child: PosAcmSearchPages(
+                responsePosCtrl: null,
+                txt: null,
+                actionDo: null,
+                posAcmLists: null,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
 BoxDecoration myBoxDecoration() {
   return BoxDecoration(
     border: Border(
@@ -92,7 +120,7 @@ class _PosHeadCard extends StatelessWidget {
         onPanStart: (details) {
           appWindow.startDragging();
         },
-        onDoubleTap: () => _showMyDialog(context, posHeadItem),
+        onDoubleTap: () => _showActivePIPDialog(context, posHeadItem),
         // onTap: onPressed,
         child: Container(
           decoration: myBoxDecoration(),

@@ -128,3 +128,24 @@ class ExecPosShiftResponse {
             (onError) => _callBackGet.onPosShiftAddError(onError.toString()));
   }
 }
+
+abstract class exActivePIPCallBack {
+  void onActivePipSuccess();
+  void onActivePipError(String error);
+}
+
+//--------When get result of Request---
+//--------will reponse to Abstract Call back events handler That's STATE implemented.
+
+class ExActivePIPResponse {
+  exActivePIPCallBack _callBackGet;
+  PosDataRequest activePip = new PosDataRequest();
+  ExActivePIPResponse(this._callBackGet);
+  exActivePip(String posexec) {
+    activePip
+        .exSaveActivePIP(posexec)
+        .then((result) => _callBackGet.onActivePipSuccess())
+        .catchError(
+            (onError) => _callBackGet.onActivePipError(onError.toString()));
+  }
+}
