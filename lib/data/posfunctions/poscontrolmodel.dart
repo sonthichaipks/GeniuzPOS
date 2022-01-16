@@ -67,8 +67,12 @@ class PosControlModel with ChangeNotifier {
   //   notifyListeners();
   // }
 
-  updateItem(int index, PosControl inventory) {
-    boxes[2].putAt(index, inventory);
+  updateItem(int index, PosControl inventory) async {
+    boxes = await con.openBox();
+    if (boxes[2] != null) {
+      boxes[2].putAt(index, inventory);
+    }
+
     notifyListeners();
   }
 

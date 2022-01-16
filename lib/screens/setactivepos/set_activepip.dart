@@ -758,54 +758,39 @@ class _ActivePipPages extends State<ActivePipPages>
   }
 
   void updatePosControl() {
-    if (isOptItem) {
-      if (_posCtrl.itemcode == null) {
-        //POSID
-        PosControlFnc().updatePosControl(
-            context,
-            PosCtrl(
-                itemcode: '10061',
-                description: 'POS ID.',
-                groupcode: '10061',
-                valuetext: _posinput.txt1.text.toString(),
-                valueint: 59,
-                valuedbl: 0,
-                image: ''));
-        //SHOP ID
-        PosControlFnc().updatePosControl(
-            context,
-            PosCtrl(
-                itemcode: '10060',
-                description: 'SHOP ID',
-                groupcode: '10060',
-                valuetext: _posinput.txt2.text.toString(),
-                valueint: 58,
-                valuedbl: 0,
-                image: ''));
-        //DataServices
-        PosControlFnc().updatePosControl(
-            context,
-            PosCtrl(
-                itemcode: '10058',
-                description: 'DATA SERVER IP.',
-                groupcode: '10058',
-                valuetext: _posinput.txt3.text.toString(),
-                valueint: 56,
-                valuedbl: 0,
-                image: ''));
-      } else {
-        PosControlFnc().updatePosControl(
-            context,
-            PosCtrl(
-                itemcode: _posCtrl.itemcode,
-                description: _posCtrl.description,
-                groupcode: _posCtrl.groupcode,
-                valuetext: _posinput.txt3.text,
-                valueint: _posCtrl.valueint,
-                valuedbl: _posCtrl.valuedbl,
-                image: posctrlImgUrl));
-      }
-    }
+    //POSID
+    PosControlFnc().updatePosControl(
+        context,
+        PosCtrl(
+            itemcode: '10061',
+            description: 'POS ID.',
+            groupcode: '10061',
+            valuetext: _posinput.txt1.text.toString(),
+            valueint: 59,
+            valuedbl: 0,
+            image: ''));
+    //SHOP ID
+    PosControlFnc().updatePosControl(
+        context,
+        PosCtrl(
+            itemcode: '10060',
+            description: 'SHOP ID',
+            groupcode: '10060',
+            valuetext: _posinput.txt2.text.toString(),
+            valueint: 58,
+            valuedbl: 0,
+            image: ''));
+    //DataServices
+    PosControlFnc().updatePosControl(
+        context,
+        PosCtrl(
+            itemcode: '10058',
+            description: 'DATA SERVER IP.',
+            groupcode: '10058',
+            valuetext: _posinput.txt3.text.toString(),
+            valueint: 56,
+            valuedbl: 0,
+            image: ''));
   }
 
   @override

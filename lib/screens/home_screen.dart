@@ -368,15 +368,15 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void getCurPluUrl() async {
-    if (OS.deviceinfo() == 'Windows') {
-      String url = PosControlFnc().getPLUurl(context);
-      String baseUrl = await PosControlFnc().getCurrentIP(url);
+    // if (OS.deviceinfo() == 'Windows') {
+    //   String url = PosControlFnc().getPLUurl(context);
+    //   String baseUrl = await PosControlFnc().getCurrentIP(url);
 
-      PosControlFnc().checkCurIP_pluWSurl(context, baseUrl);
+    //   PosControlFnc().checkCurIP_pluWSurl(context, baseUrl);
 
-      // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
-      //   PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
-    }
+    //   // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+    //   //   PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
+    // }
 
     firstOpen += 5;
   }

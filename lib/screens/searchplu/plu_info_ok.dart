@@ -103,15 +103,16 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
   }
 
   void getCurPluUrl() async {
-    if (OS.deviceinfo() == 'Windows') {
-      String url = PosControlFnc().getPLUurl(context);
-      pluUrl = await PosControlFnc().getCurrentIP(url);
-      PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
-      PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
-    } else {
-      pluUrl = PosControlFnc().getPLUurl(context);
-      // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
-    }
+    pluUrl = PosControlFnc().getPLUurl(context);
+    // if (OS.deviceinfo() == 'Windows') {
+    //   String url = PosControlFnc().getPLUurl(context);
+    //   pluUrl = await PosControlFnc().getCurrentIP(url);
+    //   PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+    //   PosControlFnc().checkCurIP_pluWSurl(context, pluUrl);
+    // } else {
+    //   pluUrl = PosControlFnc().getPLUurl(context);
+    //   // PosControlFnc().saveActivePIP(context, pluUrl, _responseActivePip);
+    // }
   }
 
   //----test values for printing
@@ -1232,8 +1233,7 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
         String posMem = _posinput.getMemberIDname(context);
 
         if (posMem.isNotEmpty && posMem != ' ') {
-          String url =
-              pluUrl + '/getsaleitem/i/' + posMem + '/' + _posinput.txt1.text;
+          String url = pluUrl + '/i/' + posMem + '/' + _posinput.txt1.text;
 
           _reponsePluList.getPluList(url);
         } else {
@@ -1245,12 +1245,11 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
         String posMem = _posinput.getMemberIDname(context);
 
         if (posMem.isNotEmpty && posMem != ' ') {
-          String url =
-              pluUrl + '/getsaleitem/i/' + posMem + '/@' + _posinput.txt1.text;
+          String url = pluUrl + '/i/' + posMem + '/@' + _posinput.txt1.text;
 
           _reponsePluList.getPluList(url);
         } else {
-          String url = pluUrl + '/getsaleitem/@' + _posinput.txt1.text;
+          String url = pluUrl + '/@' + _posinput.txt1.text;
 
           _reponsePluList.getPluList(url);
         }
@@ -1258,12 +1257,11 @@ class _PluInfoOkPages extends State<PluInfoOkPages>
         String posMem = _posinput.getMemberIDname(context);
 
         if (posMem.isNotEmpty && posMem != ' ') {
-          String url =
-              pluUrl + '/getsaleitem/i/' + posMem + '/_' + _posinput.txt1.text;
+          String url = pluUrl + '/i/' + posMem + '/_' + _posinput.txt1.text;
 
           _reponsePluList.getPluList(url);
         } else {
-          String url = pluUrl + '/getsaleitem/_' + _posinput.txt1.text;
+          String url = pluUrl + '/_' + _posinput.txt1.text;
 
           _reponsePluList.getPluList(url);
         }
