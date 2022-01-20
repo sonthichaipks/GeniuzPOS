@@ -113,14 +113,14 @@ class _PosHeadCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          _showMyDialog(context, posHeadItem);
-        },
+        // onTap: () {
+        //   _showMyDialog(context, posHeadItem);
+        // },
         behavior: HitTestBehavior.translucent,
         onPanStart: (details) {
           appWindow.startDragging();
         },
-        onDoubleTap: () => _showActivePIPDialog(context, posHeadItem),
+        // onDoubleTap: () => _showActivePIPDialog(context, posHeadItem),
         // onTap: onPressed,
         child: Container(
           decoration: myBoxDecoration(),

@@ -21,7 +21,11 @@ import 'package:com_csith_geniuzpos/resources/palette.dart';
 
 import 'package:com_csith_geniuzpos/screens/mainmenus/menucomponent.dart';
 import 'package:com_csith_geniuzpos/screens/mainmenus/posregister.dart';
+import 'package:com_csith_geniuzpos/screens/posacm/components/posacm_list.dart';
+import 'package:com_csith_geniuzpos/screens/posacm/components/posacm_searchresult.dart';
+import 'package:com_csith_geniuzpos/screens/posacm/posacm_pages.dart';
 import 'package:com_csith_geniuzpos/screens/poscontrol/posctrl_pages.dart';
+import 'package:com_csith_geniuzpos/screens/posparams/components/posparam_list.dart';
 import 'package:com_csith_geniuzpos/screens/posparams/posparams_pages.dart';
 import 'package:com_csith_geniuzpos/screens/retails/components/rt_components.dart';
 import 'package:com_csith_geniuzpos/screens/salesregister/components/register_menu.dart';
@@ -298,9 +302,17 @@ class _HomeScreenState extends State<HomeScreen>
           child: Stack(
             children: [
               Container(
-                height: Palette.stdbutton_height * 4.8,
-                width: Palette.stdbutton_width * 9.2,
-                child: ActivePipPages(),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(color: Colors.white, spreadRadius: 3),
+                  ],
+                ),
+                height: Palette.stdbutton_height * 7.2,
+                width: Palette.stdbutton_width * 7.2,
+                // height: Palette.stdbutton_height * 4.8,
+                // width: Palette.stdbutton_width * 9.2,
+                child: PosAcmSearchPages(), //ActivePipPages(),
               ),
             ],
           ),

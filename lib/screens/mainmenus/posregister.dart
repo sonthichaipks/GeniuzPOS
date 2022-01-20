@@ -31,11 +31,6 @@ Widget posRegister(BuildContext context, String databasename, String branches,
           left: 10,
           child: logoheadf1(context),
         ),
-        // Positioned(
-        //   top: 670,
-        //   left: 966,
-        //   child: configf1(),
-        // ),
         Positioned(
           top: 620,
           left: 173,

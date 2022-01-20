@@ -1,3 +1,4 @@
+import 'package:com_csith_geniuzpos/models/posmodels/getActivePosStation.dart';
 import 'package:com_csith_geniuzpos/resources/csiconfig.dart';
 import 'package:com_csith_geniuzpos/resources/fnccal.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posAcmModel.dart';
@@ -47,15 +48,14 @@ class PosParamCtrl {
     return 'OK';
   }
 
-  // //-----direct get params value ---
-  // int getParamKey(String ck) {
-  //   switch (ck) {
-  //     case '10006':
-  //       return 33;
-  //       break;
-  //     default:
-  //       return 0;
-  //       break;
-  //   }
-  // }
+  Future<List<GetActivePosStation>> getActivePosStation(String posid) async {
+    List<GetActivePosStation> list;
+    //  String urlAndPosid =
+    //         PosControlFnc().getCsParamUrl(context);
+    var data = await wsList(posid);
+    if (data != null) {
+      list = getActivePosStationFromJson(data);
+    }
+    return list;
+  }
 }

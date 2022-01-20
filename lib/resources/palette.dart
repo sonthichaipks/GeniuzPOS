@@ -56,10 +56,9 @@ class Palette {
   static const String posacm_title = "POS ACCUMURATES VALUES";
   static const String posacm_f1 = "ACM.ID";
   static const String posacmf11 = "ACM.NAME";
-  static const String posacmf111 =
-      "CURRENT VALUES (I/T)\r\nChange click here >>";
+  static const String posacmf111 = "SETTING VALUES";
   static const String posacmf2 = "Description";
-  static const String searchacm_title = "POS CONFIGURATION ITEMS";
+  static const String searchacm_title = "POS CONFIGURATION ENTRY";
   //------plu--ok----
   static const String checkprice_title =
       "PRICE CHECK \r\n ENTRY WORDS FOR SEARCH PLU BY CODE,NAME or BOTH  (CODE & NAME)";

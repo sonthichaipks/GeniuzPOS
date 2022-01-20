@@ -1,3 +1,4 @@
+import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolmodel.dart';
 import 'package:com_csith_geniuzpos/data/posfunctions/posinput.dart';
 import 'package:com_csith_geniuzpos/models/posctrls/poscontrol.dart';
 import 'package:com_csith_geniuzpos/resources/fnccal.dart';
@@ -5,6 +6,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
+import 'package:provider/provider.dart';
 
 class PosParamSearchList extends StatefulWidget {
   final Function actdo;
@@ -64,6 +66,7 @@ class _PosParamSearchList extends State<PosParamSearchList> {
         ),
       ),
     ]);
+    //});
   }
 
   List<DataRow> searchPSdemo(List<PosControl> posCtrlLists) {

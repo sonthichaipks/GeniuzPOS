@@ -1,4 +1,5 @@
 import 'package:com_csith_geniuzpos/data/constdata.dart';
+import 'package:com_csith_geniuzpos/data/posfunctions/poscontrolfnc.dart';
 import 'package:com_csith_geniuzpos/models/persons/salman.dart';
 import 'package:com_csith_geniuzpos/models/posctrls/poscontrol.dart';
 import 'package:com_csith_geniuzpos/screens/posacm/components/posacm_list.dart';
@@ -111,7 +112,11 @@ class _PosAcmSearchPages extends State<PosAcmSearchPages>
           width: double.infinity,
           height: 30,
           decoration: BoxDecoration(
-              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(color: Colors.white, spreadRadius: 3),
+              ],
+              color: Colors.grey,
               border: Border(
                 top: BorderSide(width: 1.0, color: Colors.white),
                 left: BorderSide(width: 1.0, color: Colors.white),
@@ -125,7 +130,7 @@ class _PosAcmSearchPages extends State<PosAcmSearchPages>
                 text: '',
                 children: <TextSpan>[
                   TextSpan(
-                      text: Palette.searchacm_title,
+                      text: Palette.possmt_title,
                       style: TextStyle(
                         fontFamily: 'Tahoma',
                         fontWeight: FontWeight.w500,
@@ -173,9 +178,9 @@ class _PosAcmSearchPages extends State<PosAcmSearchPages>
   Widget psCommandForm() {
     return Stack(
       children: [
-        curveButtons(context, _responseInput, stdButtuon0[4], 580, 100,
+        curveButtons(context, _responseInput, stdButtuon0[4], 400, 100,
             Palette.stdbutton_width * 1.3, Palette.stdbutton_height * 1),
-        curveButtons(context, _responseInput, stdButtuon0[3], 580, 380,
+        curveButtons(context, _responseInput, stdButtuon0[3], 400, 340,
             Palette.stdbutton_width * 1.3, Palette.stdbutton_height * 1),
       ],
     );
@@ -205,19 +210,44 @@ class _PosAcmSearchPages extends State<PosAcmSearchPages>
     }
   }
 
-  void updateConfig(int index, String values) {
+  void updateConfig(PosCtrl posConfigList, String setvalue) async {
     try {
-      // PosControlFnc().updateSetPanel(context, index - 56, values);
-      // if (index == 0) {
-      //   model.updateItem(
-      //       index + 56,
-      //       getPocControlFmPosCtrl(_PosCtrlupdate(
-      //           values, posCtrlList[index + 56])));
-      // } else if (index == 1) {
-      // } else if (index == 2) {
-      // } else if (index == 3) {}
-    } catch (e) {
-      showToast(context, e.toString());
-    }
+      //POSID
+      PosControlFnc().updatePosControl(
+          context,
+          PosCtrl(
+              itemcode: posConfigList.itemcode,
+              description: posConfigList.description,
+              groupcode: posConfigList.itemcode,
+              valuetext: setvalue,
+              valueint: posConfigList.valueint,
+              valuedbl: 0,
+              image: ''));
+      //SHOP ID
+      // PosControlFnc().updatePosControl(
+      //     context,
+      //     PosCtrl(
+      //         itemcode: '10060',
+      //         description: 'SHOP ID',
+      //         groupcode: '10060',
+      //         valuetext: _posinput.txt2.text.toString(),
+      //         valueint: 58,
+      //         valuedbl: 0,
+      //         image: ''));
+      // //DataServices
+      // PosControlFnc().updatePosControl(
+      //     context,
+      //     PosCtrl(
+      //         itemcode: '10058',
+      //         description: 'DATA SERVER IP.',
+      //         groupcode: '10058',
+      //         valuetext: _posinput.txt3.text.toString(),
+      //         valueint: 56,
+      //         valuedbl: 0,
+      //         image: ''));
+      //set start docno first then
+      //request  doc start  or load Server palams to this pos station
+      //
+    } catch (e) {}
   }
 }

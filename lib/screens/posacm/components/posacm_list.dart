@@ -34,9 +34,35 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    posConfigList.add(posCtrlList[59]);
+    posConfigList.add(posCtrlList[58]);
+    posConfigList.add(posCtrlList[01]);
+    posConfigList.add(posCtrlList[56]);
+    posConfigList.add(posCtrlList[68]);
+    posConfigList.add(posCtrlList[69]);
+
+    for (int i = 0; i < 6; ++i) {
+      txts.add(new TextEditingController());
+      txtfcs.add(new FocusNode());
+      setFocusListen(i);
+    }
+
+    super.initState();
+  }
+
+  void setFocusListen(int index) {
+    txtfcs[index].addListener(() {
+      txts[index].selection = TextSelection.fromPosition(
+          TextPosition(offset: txts[index].text.length));
+    });
+  }
+
   TextEditingController txtGet;
   List<TextEditingController> txts = [];
   List<FocusNode> txtfcs = [];
+  List<PosCtrl> posConfigList = new List<PosCtrl>();
 
   String editValue = '';
   PosCtrl editslist;
@@ -48,7 +74,7 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
     return Row(children: [
       GestureDetector(
         child: Container(
-          height: Palette.stdbutton_height * 7.4,
+          height: Palette.stdbutton_height * 4.7,
           width: Palette.stdbutton_width * 7,
           decoration: BoxDecoration(
               color: Colors.white,
@@ -64,7 +90,7 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
               data: Theme.of(context).copyWith(dividerColor: Colors.white),
               //  child:
               child: Container(
-                height: Palette.stdbutton_height * 7.4,
+                height: Palette.stdbutton_height * 6.6,
                 child: DataTable2(
                   showCheckboxColumn: false,
                   headingRowHeight: 0,
@@ -72,7 +98,7 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
                   columnSpacing: 0,
                   horizontalMargin: 1,
                   columns: PosInput().kTableColumnSearchPOSCTRLList,
-                  rows: searchPSdemo(),
+                  rows: searchConfig(),
                 ),
               ),
             ),
@@ -82,85 +108,22 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
     ]);
   }
 
-  List<DataRow> searchPSdemo_0() {
-    return List<DataRow>.generate(32, (index) {
-      index = 63 + index;
-      final PosCtrl _searchpslist = posCtrlList[index];
-      return getRow(index, _searchpslist);
-
-      // final PosCtrl _searchpslist = widget.posAcmLists[index];
-      // // PosAcm().posCycleAcm[index];
-      // return getRow(index, _searchpslist);
+  List<DataRow> searchConfig() {
+    return List<DataRow>.generate(posConfigList.length, (index) {
+      final PosCtrl _searchpslist = posConfigList[index];
+      return getRowConfig(index, _searchpslist, _searchpslist.itemcode);
     });
   }
 
-  List<DataRow> searchPSdemo() {
-    return List<DataRow>.generate(4, (index) {
-      index = 56 + index;
-      txts.add(TextEditingController());
-      //txts[index - 57] = new TextEditingController();
-      final PosCtrl _searchpslist = posCtrlList[index];
-      return getRow(index, _searchpslist);
-
-      // final PosCtrl _searchpslist = widget.posAcmLists[index];
-      // // PosAcm().posCycleAcm[index];
-      // return getRow(index, _searchpslist);
-    });
-  }
-
-  Future<void> _handleSubmission(PosCtrl _posCtrl, String value) async {
-    await showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Do you want to change this'),
-          content: Text('Do you want to change this to "$value"? (OK/CANEL)'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                Navigator.pop(context);
-              },
-              child: const Text('CANCEL'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await updatePosCtrl(_posCtrl, value);
-                Navigator.pop(context);
-                //setState(() {});
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void updatePosCtrl(PosCtrl _posCtrl, String value) async {
-    PosControlModel model =
-        Provider.of<PosControlModel>(context, listen: false);
-
-    PosControlFnc().updatePosControl(
-        context,
-        PosCtrl(
-            itemcode: _posCtrl.itemcode,
-            description: _posCtrl.description,
-            groupcode: _posCtrl.groupcode,
-            valuetext: value,
-            valueint: _posCtrl.valueint,
-            valuedbl: _posCtrl.valuedbl,
-            image: _posCtrl.image));
-  }
-
-  DataRow getRow(int index, _searchpslist) {
+  DataRow getRowConfig(int index, _searchpslist, String itemcode) {
     int checkselect = 0;
 
     bool submit = false;
     String _valuetext =
-        PosControlFnc().getCurrentSettingValues(context, _searchpslist);
+        PosControlFnc().getCurrentSettingValuesById(context, itemcode);
 
-    txts[index - 56].text = _valuetext.replaceAll(']', ', ');
-    txtfcs.add(new FocusNode());
+    txts[index].text = _valuetext.replaceAll(']', ', ');
+
     var _data = PosControlFnc().getPosCtrlOpt(_searchpslist, _valuetext);
     if (_data == null) {
       _data = _searchpslist;
@@ -191,10 +154,7 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
               padding: EdgeInsets.all(2),
               width: 256,
               child: Text(
-                rno.format(index) +
-                    _data.itemcode.replaceAll(']', ', ') +
-                    '\r\n' +
-                    _data.description,
+                _data.description,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   color: Colors.black,
@@ -211,14 +171,29 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
               width: 500,
               child: RawKeyboardListener(
                 onKey: onTextFieldKey,
-                focusNode: txtfcs[index - 56],
+                focusNode: txtfcs[index],
                 child: TextField(
-                  controller: txts[index - 56],
+                  controller: txts[index],
                   onChanged: (text) {
                     editslist = _searchpslist;
                     editValue = text;
                     checkselect = index;
                   },
+                  style: TextStyle(
+                    fontFamily: 'Tahoma',
+                    fontWeight: FontWeight.w400,
+                    fontSize: 10,
+                    color: Colors.black,
+                  ),
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(12.0),
+                    labelStyle: TextStyle(color: Colors.grey),
+                    labelText: 'Entry value and then [ENTER]',
+                    enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blueAccent)),
+                  ),
                 ),
               ),
             ),
@@ -244,8 +219,34 @@ class _PosAcmSearchList extends State<PosAcmSearchList> {
 
   submit() {
     if (editValue != '') {
-      _handleSubmission(editslist, editValue);
-      // Navigator.pop(context);
+      _handleSubmission(editslist, editValue.trim());
     }
+  }
+
+  Future<void> _handleSubmission(PosCtrl _posCtrl, String value) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Do you want to change this'),
+          content: Text('Do you want to change this to "$value"? (OK/CANEL)'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+              },
+              child: const Text('CANCEL'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await widget.actdo(_posCtrl, value);
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

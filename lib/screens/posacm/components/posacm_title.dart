@@ -28,9 +28,9 @@ Widget posAcmTitle() {
             ),
             Positioned(
               top: 0,
-              left: 242,
+              left: 273,
               child: Container(
-                  width: 304,
+                  width: 273,
                   height: 28,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -46,7 +46,7 @@ Widget posAcmTitle() {
                 top: 4,
                 left: 60,
                 child: Text(
-                  'NAME',
+                  Palette.posctrl_title,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w400,
@@ -57,8 +57,8 @@ Widget posAcmTitle() {
                 )),
             Positioned(
               top: 4,
-              left: 320,
-              child: Text(Palette.posacmf111.split('\r\n')[0],
+              left: 360,
+              child: Text(Palette.posacmf111,
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w400,

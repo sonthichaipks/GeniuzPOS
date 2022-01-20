@@ -1,3 +1,4 @@
+import 'package:com_csith_geniuzpos/models/posmodels/getActivePosStation.dart';
 import 'package:com_csith_geniuzpos/models/posmodels/vposparam.dart';
 import 'package:com_csith_geniuzpos/services/request/psparam_request.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,5 +42,26 @@ class LogCsParamResponse {
         .loadPosParam(context, v)
         .then((ok) => _callBackGet.onLogParamSuccess(ok))
         .catchError((onError) => _callBackGet.onLogParamError(onError));
+  }
+}
+
+abstract class getActPosStationCallBack {
+  void onActPosSuccess(List<GetActivePosStation> ok);
+  void onActPosError(String error);
+}
+
+//--------When get result of Request---
+//--------will reponse to Abstract Call back events handler That's STATE implemented.
+
+class GetActPosStationResponse {
+  getActPosStationCallBack _callBackGet;
+  PosCsParamRequest actposRequest = new PosCsParamRequest();
+  GetActPosStationResponse(this._callBackGet);
+
+  getActivePosStation(String posid) {
+    actposRequest
+        .getActivePosStation(posid)
+        .then((ok) => _callBackGet.onActPosSuccess(ok))
+        .catchError((onError) => _callBackGet.onActPosError(onError));
   }
 }

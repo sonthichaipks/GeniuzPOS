@@ -301,6 +301,22 @@ class PosControlFnc {
     }
   }
 
+  String getCurrentSettingValuesById(BuildContext context, String itemcode) {
+    PosControlModel model =
+        Provider.of<PosControlModel>(context, listen: false);
+    var result =
+        model.poscontrolList.where((e) => e.posctrlkey == itemcode).toList();
+    if (result.isNotEmpty) {
+      String _result;
+      for (PosControl posctrl in result) {
+        _result = posctrl.posctrldata;
+      }
+      return _result;
+    } else {
+      return '';
+    }
+  }
+
   PosCtrl getPosCtrlOpt(PosCtrl _posCtrl, String valuetext) {
     try {
       List<PosCtrl> _posCtrlListOpt = posCtrlListOpt
@@ -390,16 +406,31 @@ class PosControlFnc {
         .where((e) => (e.itemcode == model.poscontrolList[1].posctrlkey))
         .toList();
     MaterialPageRoute route;
-    if (result == screentypes[0].valuetext.split('-')[0].trim()) {
-      route = MaterialPageRoute(builder: (value) => RetailSalesPages());
-    } else if (result == screentypes[1].valuetext.split('-')[0].trim()) {
-      route = MaterialPageRoute(builder: (value) => FullSalesPages());
-    } else if (result == screentypes[2].valuetext.split('-')[0].trim()) {
-      route = MaterialPageRoute(builder: (value) => ResturantSalesPages());
-    } else {
-      route = MaterialPageRoute(builder: (value) => RetailSalesPages());
+    try {
+      if (result == screentypes[0].valuetext.split('-')[0].trim()) {
+        route = MaterialPageRoute(builder: (value) => RetailSalesPages());
+      } else if (result == screentypes[1].valuetext.split('-')[0].trim()) {
+        route = MaterialPageRoute(builder: (value) => FullSalesPages());
+      } else if (result == screentypes[2].valuetext.split('-')[0].trim()) {
+        route = MaterialPageRoute(builder: (value) => ResturantSalesPages());
+      } else {
+        route = MaterialPageRoute(builder: (value) => RetailSalesPages());
+      }
+      Navigator.push(context, route);
+    } catch (e) {
+      Navigator.pop(context);
     }
-    Navigator.push(context, route);
+  }
+
+  String getActivePosUrl(BuildContext context, String posid) {
+    PosControlModel model =
+        Provider.of<PosControlModel>(context, listen: false);
+    PosCtrl _searchpslist = posCtrlList[MyConfig().i_pluWSurl];
+    String result =
+        PosControlFnc().getCurrentSettingValues(context, _searchpslist);
+    // http://192.168.1.34:9393/getsaleitem/999
+    //--this is funtion get only posid/member plulist !
+    return result + '/getActivePosStation/' + posid;
   }
 
   String getRefundUrl(BuildContext context, String docno, String params) {

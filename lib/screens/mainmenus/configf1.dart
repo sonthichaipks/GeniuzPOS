@@ -35,17 +35,3 @@ void retreiveConfig() {
     }
   }
 }
-
-// void retreiveAccum() {
-//   if (configModel.poscontrolList.length == 0) {
-//     PosCtrl poscontrol;
-//     for (poscontrol in posCtrlList)
-//       PosControlFnc().getPocControlFmPosCtrl(poscontrol);
-//   } else {
-//     int dataLen = configModel.poscontrolList.length;
-//     int confLen = posCtrlList.length;
-//     if (confLen - dataLen > 1) {
-//       PosControlFnc().addGapDataWithConf(configModel, dataLen, confLen);
-//     }
-//   }
-// }

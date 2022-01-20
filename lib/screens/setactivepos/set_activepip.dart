@@ -50,10 +50,10 @@ class ActivePipPages extends StatefulWidget {
 }
 
 class _ActivePipPages extends State<ActivePipPages>
-    implements PosFncCallBack, GetPosCtrlCallBack {
+    implements PosFncCallBack, GetPosCtrlCallBack, getActPosStationCallBack {
   PosFncCallResponse _responseInput;
   GetPosCtrlResponse _responsePosCtrl;
-  //GetActPosStationResponse _responseActPos;
+  GetActPosStationResponse _responseActPos;
   TextEditingController activeTxt;
   final PosInput _posinput = new PosInput();
   _ActivePipPages() {
@@ -80,9 +80,12 @@ class _ActivePipPages extends State<ActivePipPages>
     fcn1 = FocusNode();
     fcn2 = FocusNode();
     fcn3 = FocusNode();
+    fcn4 = FocusNode();
+    fcn5 = FocusNode();
+    fcn6 = FocusNode();
     _responseInput = new PosFncCallResponse(this);
     _responsePosCtrl = new GetPosCtrlResponse(this);
-    //_responseActPos = new GetActPosStationResponse(this);
+    _responseActPos = new GetActPosStationResponse(this);
     _posCtrl = new PosCtrl();
     putPosCtrlClearValues();
     _posOptSelect = 0;
@@ -106,9 +109,22 @@ class _ActivePipPages extends State<ActivePipPages>
     PosCtrl posctrl58 = posCtrlList[MyConfig().i_pluWSurl]; //Data Service URL
     String curUrl = PosControlFnc().getCurrentSettingValues(context, posctrl58);
 
+    PosCtrl posctrl68 =
+        posCtrlList[MyConfig().a_cycleRcptBegEnd]; //Data Service URL
+    String rcptBegEnd =
+        PosControlFnc().getCurrentSettingValues(context, posctrl68);
+
+    PosCtrl posctrl69 =
+        posCtrlList[MyConfig().a_cycleRcptBegEnd]; //Data Service URL
+    String refnBegEnd =
+        PosControlFnc().getCurrentSettingValues(context, posctrl69);
+
     _posinput.txt1.text = curPosStation;
     _posinput.txt2.text = curBranch;
     _posinput.txt3.text = curUrl;
+
+    _posinput.txt4.text = rcptBegEnd;
+    _posinput.txt5.text = rcptBegEnd;
   }
 
   void putPosCtrlOpt() {
@@ -135,7 +151,7 @@ class _ActivePipPages extends State<ActivePipPages>
     } catch (e) {}
   }
 
-  void putActivePosValues(PsActivePosStation _listgetActPos) {
+  void putActivePosValues(GetActivePosStation _listgetActPos) {
     _posinput.txt1.text = _listgetActPos.posId;
     _posinput.txt2.text =
         _listgetActPos.shopId + ' - ' + _listgetActPos.branchName;
@@ -223,8 +239,7 @@ class _ActivePipPages extends State<ActivePipPages>
         Container(child: pscodeForm()),
         Container(child: psnameForm()),
         Container(child: psValueForm()),
-        // Container(child: psMemoForm()),
-        //  Container(child: psPhotoForm()),
+        //Container(child: listConfig()),
         Container(child: psCtrlMenu()),
       ]),
     );
@@ -277,30 +292,7 @@ class _ActivePipPages extends State<ActivePipPages>
           );
         }
         break;
-      // case "PARAMS":
-      //   showDialog(
-      //     context: context,
-      //     builder: (context) {
-      //       return Dialog(
-      //         backgroundColor: Colors.white,
-      //         insetAnimationDuration: const Duration(milliseconds: 100),
-      //         child: Stack(
-      //           children: [
-      //             Container(
-      //               // use container to change width and height
-      //               height: Palette.stdbutton_height * 9.8,
-      //               width: Palette.stdbutton_width * 7.3,
-      //               child: PosParamSearchPages(
-      //                 actdo: getData,
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     },
-      //   );
 
-      //   break;
       default:
         // normalDialog(context, mnuName);
         break;
@@ -345,89 +337,283 @@ class _ActivePipPages extends State<ActivePipPages>
   }
 
   Widget pscodeForm() {
+    return Card(
+      child: Row(
+        children: [
+          Positioned(
+            top: 10,
+            left: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Center(
+                child: Container(
+                  width: Palette.stdbutton_width * 3.6,
+                  height: Palette.stdbutton_height * 1.2,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Palette.stdbutton_width * 3.6,
+                        height: Palette.stdbutton_height * 1.2,
+                        padding: const EdgeInsets.all(1),
+                        child: RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(
+                            text: '',
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: Palette.posctrl_posid_lbl,
+                                  style: TextStyle(
+                                    fontFamily: 'Tahoma',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 10,
+            left: 166,
+            child: Container(
+              width: Palette.stdbutton_width * 3.6,
+              height: Palette.onelineheigth() * 0.8,
+              //padding: const EdgeInsets.all(1),
+              child: TextField(
+                autofocus: true,
+                enabled: fcb1,
+                focusNode: fcn1,
+                controller: _posinput.txt1,
+                onChanged: (text) {},
+                onSubmitted: (result) {
+                  // txtinputEntry('SEARCH');
+                  fcn2.requestFocus();
+                },
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  // contentPadding: const EdgeInsets.all(10.0),
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //  borderSide: BorderSide(color: CsiStyle().primaryColor),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget psnameForm() {
+    return Card(
+      child: Stack(
+        children: [
+          Positioned(
+            top: 114,
+            left: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Center(
+                child: Container(
+                  width: Palette.stdbutton_width * 4,
+                  height: Palette.stdbutton_height,
+                  child: Row(
+                    children: [
+                      Container(
+                        width: Palette.stdbutton_width * 3.6,
+                        height: Palette.stdbutton_height,
+                        padding: const EdgeInsets.all(1),
+                        child: RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(
+                            text: '',
+                            children: <TextSpan>[
+                              TextSpan(
+                                  text: Palette.posctrl_shopid_lbl,
+                                  style: TextStyle(
+                                    fontFamily: 'Tahoma',
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14,
+                                    color: Colors.black,
+                                  )),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 120,
+            left: 166,
+            child: Container(
+              width: Palette.stdbutton_width * 4.7,
+              height: Palette.onelineheigth() * 0.8,
+              // padding: const EdgeInsets.all(1),
+              child: TextField(
+                focusNode: fcn2,
+                enabled: fcb2,
+                controller: _posinput.txt2,
+                onChanged: (text) {},
+                onSubmitted: (result) {
+                  //fcn3.requestFocus();
+                },
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  //  contentPadding: const EdgeInsets.all(10.0),
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //  borderSide: BorderSide(color: CsiStyle().primaryColor),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget psValueForm() {
+    return Card(
+      child: Stack(
+        children: [
+          Positioned(
+              top: 192,
+              left: 10,
+              child: Container(
+                width: Palette.stdbutton_width * 1.9,
+                height: Palette.stdbutton_height * 0.3,
+                decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    color: Palette.stdbutton_theme_7,
+                    border: Border(
+                      top: BorderSide(
+                          width: 1.0, color: Palette.stdbutton_theme_7),
+                      left: BorderSide(
+                          width: 1.0, color: Palette.stdbutton_theme_7),
+                      right: BorderSide(
+                          width: 1.0, color: Palette.stdbutton_theme_7),
+                      bottom: BorderSide(width: 1.0, color: Colors.red),
+                    )),
+              )),
+          Positioned(
+            top: 172,
+            left: 10,
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Center(
+                child: Container(
+                  width: Palette.stdbutton_width * 3.6,
+                  height: Palette.stdbutton_height * 1.2,
+                  child: GestureDetector(
+                    onTap: () {
+                      putPosCtrlOpt();
+                    },
+                    child: RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                        text: '',
+                        children: <TextSpan>[
+                          TextSpan(
+                              text: Palette.posctrl_dataurl_lbl,
+                              style: TextStyle(
+                                fontFamily: 'Tahoma',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Colors.black,
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 178,
+            left: 166,
+            child: Container(
+              width: Palette.stdbutton_width * 6.6,
+              height: Palette.onelineheigth() * 0.8,
+              //padding: const EdgeInsets.all(1),
+              child: TextField(
+                autofocus: true,
+                enabled: fcb3,
+                focusNode: fcn3,
+                controller: _posinput.txt3,
+                onChanged: (text) {},
+                onSubmitted: (result) {
+                  txtinputEntry('SEARCH');
+                },
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  // contentPadding: const EdgeInsets.all(10.0),
+                  labelStyle: TextStyle(color: Colors.grey),
+                  labelText: '',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    //  borderSide: BorderSide(color: CsiStyle().primaryColor),
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget listConfig() {
     return Stack(
       children: [
         Positioned(
-          top: 56,
+          top: 0,
           left: 10,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Center(
-              child: Container(
-                width: Palette.stdbutton_width * 3.6,
-                height: Palette.stdbutton_height * 1.2,
-                child: Row(
-                  children: [
-                    Container(
-                      width: Palette.stdbutton_width * 3.6,
-                      height: Palette.stdbutton_height * 1.2,
-                      padding: const EdgeInsets.all(1),
-                      child: RichText(
-                        textAlign: TextAlign.left,
-                        text: TextSpan(
-                          text: '',
-                          children: <TextSpan>[
-                            TextSpan(
-                                text: Palette.posctrl_posid_lbl,
-                                style: TextStyle(
-                                  fontFamily: 'Tahoma',
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 14,
-                                  color: Colors.black,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: 60,
-          left: 166,
-          child: Container(
-            width: Palette.stdbutton_width * 3.6,
-            height: Palette.onelineheigth() * 0.8,
-            //padding: const EdgeInsets.all(1),
-            child: TextField(
-              autofocus: true,
-              enabled: fcb1,
-              focusNode: fcn1,
-              controller: _posinput.txt1,
-              onChanged: (text) {},
-              onSubmitted: (result) {
-                txtinputEntry('SEARCH');
-                fcn2.requestFocus();
-              },
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                // contentPadding: const EdgeInsets.all(10.0),
-                labelStyle: TextStyle(color: Colors.grey),
-                labelText: '',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  //  borderSide: BorderSide(color: CsiStyle().primaryColor),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-              ),
-            ),
-          ),
+          child: ListView(children: [
+            pscodeForm(),
+            psnameForm(),
+            psValueForm(),
+            //begRecpNoForm(),
+            //begRefnNoForm(),
+          ]),
         ),
       ],
     );
   }
 
-  Widget psnameForm() {
+  Widget begRecpNoForm() {
     return Stack(
       children: [
         Positioned(
-          top: 114,
+          top: 0,
           left: 10,
           child: Padding(
             padding: const EdgeInsets.all(4.0),
@@ -465,16 +651,16 @@ class _ActivePipPages extends State<ActivePipPages>
           ),
         ),
         Positioned(
-          top: 120,
+          top: 0,
           left: 166,
           child: Container(
             width: Palette.stdbutton_width * 4.7,
             height: Palette.onelineheigth() * 0.8,
             // padding: const EdgeInsets.all(1),
             child: TextField(
-              focusNode: fcn2,
+              focusNode: fcn4,
               enabled: fcb2,
-              controller: _posinput.txt2,
+              controller: _posinput.txt4,
               onChanged: (text) {},
               onSubmitted: (result) {
                 //fcn3.requestFocus();
@@ -500,118 +686,23 @@ class _ActivePipPages extends State<ActivePipPages>
     );
   }
 
-  Widget psValueForm() {
+  Widget begRefnNoForm() {
     return Stack(
       children: [
         Positioned(
-            top: 192,
-            left: 10,
-            child: Container(
-              width: Palette.stdbutton_width * 1.9,
-              height: Palette.stdbutton_height * 0.3,
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Palette.stdbutton_theme_7,
-                  border: Border(
-                    top: BorderSide(
-                        width: 1.0, color: Palette.stdbutton_theme_7),
-                    left: BorderSide(
-                        width: 1.0, color: Palette.stdbutton_theme_7),
-                    right: BorderSide(
-                        width: 1.0, color: Palette.stdbutton_theme_7),
-                    bottom: BorderSide(width: 1.0, color: Colors.red),
-                  )),
-            )),
-        Positioned(
-          top: 172,
+          top: 30,
           left: 10,
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Center(
               child: Container(
-                width: Palette.stdbutton_width * 3.6,
-                height: Palette.stdbutton_height * 1.2,
-                child: GestureDetector(
-                  onTap: () {
-                    putPosCtrlOpt();
-                  },
-                  child: RichText(
-                    textAlign: TextAlign.left,
-                    text: TextSpan(
-                      text: '',
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: Palette.posctrl_dataurl_lbl,
-                            style: TextStyle(
-                              fontFamily: 'Tahoma',
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Colors.black,
-                            )),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          top: 178,
-          left: 166,
-          child: Container(
-            width: Palette.stdbutton_width * 6.6,
-            height: Palette.onelineheigth() * 0.8,
-            //padding: const EdgeInsets.all(1),
-            child: TextField(
-              autofocus: true,
-              enabled: fcb3,
-              focusNode: fcn3,
-              controller: _posinput.txt3,
-              onChanged: (text) {},
-              onSubmitted: (result) {
-                if (!isOptItem) {
-                  isOptItem = true;
-                }
-              },
-              textAlignVertical: TextAlignVertical.center,
-              decoration: InputDecoration(
-                // contentPadding: const EdgeInsets.all(10.0),
-                labelStyle: TextStyle(color: Colors.grey),
-                labelText: '',
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  //  borderSide: BorderSide(color: CsiStyle().primaryColor),
-                  borderRadius: BorderRadius.circular(0),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget psMemoForm() {
-    return Stack(
-      children: [
-        Positioned(
-          top: 230,
-          left: 10,
-          child: Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Center(
-              child: Container(
-                width: Palette.stdbutton_width * 3.6,
-                height: Palette.stdbutton_height * 1.2,
+                width: Palette.stdbutton_width * 4,
+                height: Palette.stdbutton_height,
                 child: Row(
                   children: [
                     Container(
                       width: Palette.stdbutton_width * 3.6,
-                      height: Palette.stdbutton_height * 1.2,
+                      height: Palette.stdbutton_height,
                       padding: const EdgeInsets.all(1),
                       child: RichText(
                         textAlign: TextAlign.left,
@@ -619,11 +710,11 @@ class _ActivePipPages extends State<ActivePipPages>
                           text: '',
                           children: <TextSpan>[
                             TextSpan(
-                                text: Palette.posctrlf2,
+                                text: Palette.posctrl_shopid_lbl,
                                 style: TextStyle(
                                   fontFamily: 'Tahoma',
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   color: Colors.black,
                                 )),
                           ],
@@ -636,45 +727,36 @@ class _ActivePipPages extends State<ActivePipPages>
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget psPhotoForm() {
-    return Stack(
-      children: [
         Positioned(
-          top: 238,
+          top: 30,
           left: 166,
           child: Container(
-            width: Palette.stdbutton_width * 6.6,
-            height: Palette.onelineheigth() * 5,
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Palette.stdbutton_theme_6,
+            width: Palette.stdbutton_width * 4.7,
+            height: Palette.onelineheigth() * 0.8,
+            // padding: const EdgeInsets.all(1),
+            child: TextField(
+              focusNode: fcn5,
+              enabled: fcb2,
+              controller: _posinput.txt5,
+              onChanged: (text) {},
+              onSubmitted: (result) {
+                //fcn3.requestFocus();
+              },
+              textAlignVertical: TextAlignVertical.center,
+              decoration: InputDecoration(
+                //  contentPadding: const EdgeInsets.all(10.0),
+                labelStyle: TextStyle(color: Colors.grey),
+                labelText: '',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  //  borderSide: BorderSide(color: CsiStyle().primaryColor),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+              ),
             ),
-            child: (posctrlImgUrl == '')
-                ? ClipOval(
-                    child: Image.network(
-                    PosControlFnc().urlHost + "/icon-png/posctrl.png",
-                    fit: BoxFit.fitHeight,
-                    // width: 120.0,
-                    // height: 120.0,
-                  ))
-                : Center(
-                    child: Container(
-                      width: Palette.stdbutton_width * 6.4,
-                      height: Palette.onelineheigth() * 4.8,
-                      padding: EdgeInsets.all(10),
-                      alignment: Alignment.bottomCenter,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(posctrlImgUrl),
-                        ),
-                      ),
-                    ),
-                  ),
           ),
         ),
       ],
@@ -701,9 +783,9 @@ class _ActivePipPages extends State<ActivePipPages>
         //---save --- POS CONTROL ---HIVE---
         updatePosControl();
       } else if (result == "SEARCH") {
-        // String url =
-        //     PosControlFnc().getActivePosUrl(context, _posinput.txt1.text);
-        // _responseActPos.getActivePosStation(url);
+        String url =
+            PosControlFnc().getActivePosUrl(context, _posinput.txt1.text);
+        _responseActPos.getActivePosStation(url);
         // showPopupTask(context, "CONFIGLIST");
       } else if (result == "CANCEL") {
         Navigator.pop(context);
@@ -758,39 +840,44 @@ class _ActivePipPages extends State<ActivePipPages>
   }
 
   void updatePosControl() {
-    //POSID
-    PosControlFnc().updatePosControl(
-        context,
-        PosCtrl(
-            itemcode: '10061',
-            description: 'POS ID.',
-            groupcode: '10061',
-            valuetext: _posinput.txt1.text.toString(),
-            valueint: 59,
-            valuedbl: 0,
-            image: ''));
-    //SHOP ID
-    PosControlFnc().updatePosControl(
-        context,
-        PosCtrl(
-            itemcode: '10060',
-            description: 'SHOP ID',
-            groupcode: '10060',
-            valuetext: _posinput.txt2.text.toString(),
-            valueint: 58,
-            valuedbl: 0,
-            image: ''));
-    //DataServices
-    PosControlFnc().updatePosControl(
-        context,
-        PosCtrl(
-            itemcode: '10058',
-            description: 'DATA SERVER IP.',
-            groupcode: '10058',
-            valuetext: _posinput.txt3.text.toString(),
-            valueint: 56,
-            valuedbl: 0,
-            image: ''));
+    try {
+      //POSID
+      PosControlFnc().updatePosControl(
+          context,
+          PosCtrl(
+              itemcode: '10061',
+              description: 'POS ID.',
+              groupcode: '10061',
+              valuetext: _posinput.txt1.text.toString(),
+              valueint: 59,
+              valuedbl: 0,
+              image: ''));
+      //SHOP ID
+      PosControlFnc().updatePosControl(
+          context,
+          PosCtrl(
+              itemcode: '10060',
+              description: 'SHOP ID',
+              groupcode: '10060',
+              valuetext: _posinput.txt2.text.toString(),
+              valueint: 58,
+              valuedbl: 0,
+              image: ''));
+      //DataServices
+      PosControlFnc().updatePosControl(
+          context,
+          PosCtrl(
+              itemcode: '10058',
+              description: 'DATA SERVER IP.',
+              groupcode: '10058',
+              valuetext: _posinput.txt3.text.toString(),
+              valueint: 56,
+              valuedbl: 0,
+              image: ''));
+      //set start docno first then
+      //request  doc start  or load Server palams to this pos station
+      //
+    } catch (e) {}
   }
 
   @override
@@ -820,7 +907,7 @@ class _ActivePipPages extends State<ActivePipPages>
   }
 
   @override
-  void onActPosSuccess(List<PsActivePosStation> _listgetActPos) {
+  void onActPosSuccess(List<GetActivePosStation> _listgetActPos) {
     if (_listgetActPos != null) {
       setState(() {
         putActivePosValues(_listgetActPos[0]);

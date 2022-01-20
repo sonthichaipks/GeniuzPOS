@@ -1,5 +1,6 @@
 import 'package:com_csith_geniuzpos/data/posfunctions/posinput.dart';
 import 'package:com_csith_geniuzpos/models/possales/salesItemSummary.dart';
+import 'package:com_csith_geniuzpos/screens/resturants/components/rest_logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:com_csith_geniuzpos/resources/palette.dart';
@@ -21,7 +22,7 @@ class ResturantSalesSummaryPages extends StatelessWidget {
         Positioned(
           top: 28,
           left: 0,
-          child: logohead(context, 1),
+          child: restlogohead(context, 1),
         ),
         Positioned(
           top: 28,
